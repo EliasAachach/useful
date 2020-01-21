@@ -1,0 +1,13 @@
+set nocompatible
+set background=dark
+set tabstop=4
+set wrapmargin=4
+set nobk
+syntax on
+set ruler
+set noexpandtab
+set bs=2
+set mouse=a
+set nu
+set shiftwidth=4
+set autoindent
