@@ -1,11 +1,11 @@
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/eliasaachach/.oh-my-zsh"
+export ZSH="/home/elias/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="amuse"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -100,7 +100,75 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias pokemonshow="pokemonshow -sx"
+alias pokemonshow="pokemon-colorscripts -r --no-title"
 alias mkae="make"
 alias maek="make"
 alias meak="make"
+alias ginfo="git log --graph --oneline --all"
+alias open="explorer.exe"
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# -----------------------------
+# Terminal MOTD
+# -----------------------------
+
+# Langue française pour la date
+export LANG=fr_FR.UTF-8
+export LC_TIME=fr_FR.UTF-8
+
+echo ""
+echo "╭──────────────────────────────────────╮"
+echo "│ ⚡ $(whoami)@$(hostname)"
+echo "│ 📁 $(pwd)"
+echo "│ 📅 $(date '+%A %d %B %Y')"
+
+# Git branch si présent
+git_branch=$(git branch --show-current 2>/dev/null)
+if [ ! -z "$git_branch" ]; then
+  echo "│ 🌿 git: $git_branch"
+fi
+
+# Versions dev utiles
+node_version=$(node -v 2>/dev/null)
+if [ ! -z "$node_version" ]; then
+  echo "│ 🟢 node: $node_version"
+fi
+php_version=$(php -v 2>/dev/null | head -n 1 | cut -d " " -f2)
+if [ ! -z "$php_version" ]; then
+  echo "│ 🐘 php: $php_version"
+fi
+
+echo "╰──────────────────────────────────────╯"
+echo ""
+
+# Pokémon du jour
+pokemonshow
+
+echo ""
+if [ ! -z "$git_branch" ]; then
+  echo "🌿 Branche: $git_branch"
+  git_status=$(git status --short 2>/dev/null)
+  git_ahead=$(git rev-list --count --left-only @{u}...HEAD 2>/dev/null)
+  [ ! -z "$git_ahead" ] && echo "⬆️  Commits en avance sur remote: $git_ahead"
+  if [ -z "$git_status" ]; then
+    echo "✅ Pas de modifications locales"
+  else
+    added=$(echo "$git_status" | grep '^A' | wc -l)
+    modified=$(echo "$git_status" | grep '^ M' | wc -l)
+    deleted=$(echo "$git_status" | grep '^ D' | wc -l)
+    echo "📝 Modifs: +$added ~ $modified -$deleted"
+  fi
+fi
+export PATH="$HOME/.local/bin:$PATH"
+export GPG_TTY=$(tty)
