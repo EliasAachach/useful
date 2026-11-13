@@ -1,0 +1,10 @@
+[user]
+	email = elias@theagent.com
+	name = Elias
+	signkey = E2CE7EA96420A618
+[core]
+	editor = vim
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
